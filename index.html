@@ -163,6 +163,19 @@
     .web-search-panel form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px; }
     .web-search-panel .search-wrap { grid-column: 1 / -1; max-width: none; box-shadow: none; }
     .web-search-panel .field { margin: 0; }
+    .web-results { display: grid; gap: 0; margin-top: 17px; }
+    .web-result { border-bottom: 1px solid #eef0eb; padding: 15px 2px; }
+    .web-result:first-child { border-top: 1px solid #eef0eb; }
+    .web-result a { color: #285b86; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .web-result a:hover { text-decoration: underline; }
+    .web-result small { display: block; margin: 5px 0; overflow-wrap: anywhere; color: #527447; font-size: 10px; }
+    .web-result p { margin: 0; color: #59635c; font-size: 11px; line-height: 1.6; }
+    .web-status { border: 1px solid var(--line); border-radius: 7px; padding: 15px; color: var(--muted); background: #fff; font-size: 11px; line-height: 1.6; }
+    .public-search { min-height: 100vh; padding: 25px max(20px, calc((100vw - 790px) / 2)); background: linear-gradient(145deg, #f2f3ed, #edf2f1 55%, #f5efe6); }
+    .public-search .brand { margin-bottom: 44px; padding: 0; color: var(--pine); }
+    .public-search h1 { margin: 0 0 8px; font-family: "Newsreader", Georgia, serif; font-size: 34px; font-weight: 500; letter-spacing: 0; }
+    .public-search-intro { margin: 0 0 21px; color: var(--muted); font-size: 11px; }
+    .public-search .web-search-panel { border-color: #e4e7e0; box-shadow: 0 10px 35px rgb(35 49 41 / 5%); }
     .settings-layout { display: grid; gap: 12px; }
     .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #eef0eb; padding: 13px 0; }
     .setting-row:last-child { border-bottom: 0; }
@@ -295,6 +308,11 @@
     let currentQuery = "";
     let webQuery = initialWebSearch;
     let webRedirected = false;
+    let initialSearchStarted = false;
+    let webSearchState = "idle";
+    let webSearchError = "";
+    let webResults = [];
+    let activeSearchController = null;
     let activeScreenStream = null;
     let activeDepartment = "all";
     let toastTimer;
@@ -306,6 +324,7 @@
           const restored = { ...structuredClone(seed), ...saved };
           restored.companies = restored.companies.map(company => ({ ...company, members: Array.isArray(company.members) ? company.members : [] }));
           restored.preferences = { ...seed.preferences, ...restored.preferences };
+          if (!["google", "brave"].includes(restored.preferences.searchProvider)) restored.preferences.searchProvider = "google";
           return restored;
         }
       } catch (error) {
@@ -361,9 +380,14 @@
       render();
     }
     function render() {
-      if (initialWebSearch && !webRedirected) {
-        webRedirected = true;
-        window.location.replace(webSearchUrl(initialWebSearch));
+      if (initialWebSearch) {
+        currentView = "web";
+        webQuery = initialWebSearch;
+        renderPublicWebSearch();
+        if (!initialSearchStarted) {
+          initialSearchStarted = true;
+          searchWeb(initialWebSearch);
+        }
         return;
       }
       if (!data.currentUser) { renderSignIn(); return; }
@@ -468,11 +492,76 @@
       return `<div class="section-heading"><div><p class="eyebrow">Make time for people</p><h2>Meetings</h2><p>Planned conversations with your teammates.</p></div><button class="primary-button" data-action="add-meeting"><span class="button-symbol">＋</span> Schedule meeting</button></div>${meetings.length ? `<div class="meeting-list">${meetings.map(meeting => { const date = new Date(meeting.date); const person = data.people.find(item => item.id === meeting.personId); return `<article class="meeting-row"><div class="meeting-date"><strong>${date.toLocaleDateString(undefined, { day: "2-digit", timeZone: "UTC" })}</strong><small>${date.toLocaleDateString(undefined, { month: "short", timeZone: "UTC" })}</small></div><div class="meeting-info"><strong>${escapeHtml(meeting.title)}</strong><small>${date.toLocaleString(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" })} · ${escapeHtml(meeting.duration)} min${person ? ` · with ${escapeHtml(person.name)}` : ""}</small></div><button class="icon-button" data-action="delete-meeting" data-meeting="${escapeHtml(meeting.id)}" title="Cancel meeting" aria-label="Cancel meeting">×</button></article>`; }).join("")}</div>` : `<div class="people-list"><div class="empty-state"><strong>Your calendar is clear</strong>Schedule a meeting to make time with a teammate.</div></div>`}`;
     }
     function renderWebSearch() {
-      return `<div class="section-heading"><div><p class="eyebrow">Search beyond your team</p><h2>Search the web</h2><p>Look up anything on the public internet.</p></div></div><section class="web-search-panel"><form id="web-search-form"><div class="search-wrap"><span class="search-symbol" aria-hidden="true">⌕</span><input class="search-input" id="web-search-input" type="search" autocomplete="off" placeholder="Search the web" value="${escapeHtml(webQuery)}" aria-label="Search the public web"></div><div class="field"><label for="web-provider">Search with</label><select id="web-provider" class="filter-select"><option value="google"${data.preferences.searchProvider === "google" ? " selected" : ""}>Google</option><option value="bing"${data.preferences.searchProvider === "bing" ? " selected" : ""}>Microsoft Bing</option><option value="duckduckgo"${data.preferences.searchProvider === "duckduckgo" ? " selected" : ""}>DuckDuckGo</option></select></div><button class="primary-button" type="submit"><span class="button-symbol">⌕</span> Search web</button></form><p class="search-footnote"><span>Your search opens in a new tab at the selected provider.</span></p></section><div class="company-detail-grid"><section class="detail-panel"><h3>Use this as your browser search shortcut</h3><p>Add People Index as a site search in your browser. Searches typed in the address bar will be forwarded to your chosen provider.</p><button class="text-button" data-action="default-search">Set up browser search →</button></section><section class="detail-panel"><h3>Search your company directory</h3><p>Find names, roles, departments, and locations in ${escapeHtml(activeCompany().name)}.</p><button class="text-button" data-view="search">Find a teammate →</button></section></div>`;
+      return `<div class="section-heading"><div><p class="eyebrow">Search beyond your team</p><h2>Search the web</h2><p>Results stay right here in People Index.</p></div></div><section class="web-search-panel">${renderWebSearchForm()}<div class="web-results" id="web-results">${renderWebResults()}</div></section><div class="company-detail-grid"><section class="detail-panel"><h3>Use People Index from your address bar</h3><p>Add this site as a browser search shortcut. Searches will show results inside this page.</p><button class="text-button" data-action="default-search">Set up browser search →</button></section><section class="detail-panel"><h3>Search your company directory</h3><p>Find names, roles, departments, and locations in ${escapeHtml(activeCompany().name)}.</p><button class="text-button" data-view="search">Find a teammate →</button></section></div>`;
+    }
+    function renderWebSearchForm() {
+      return `<form id="web-search-form"><div class="search-wrap"><span class="search-symbol" aria-hidden="true">⌕</span><input class="search-input" id="web-search-input" type="search" autocomplete="off" placeholder="Search the web" value="${escapeHtml(webQuery)}" aria-label="Search the public web"></div><div class="field"><label for="web-provider">Search with</label><select id="web-provider" class="filter-select"><option value="google"${data.preferences.searchProvider === "google" ? " selected" : ""}>Google Custom Search</option><option value="brave"${data.preferences.searchProvider === "brave" ? " selected" : ""}>Brave Search</option></select></div><button class="primary-button" type="submit"><span class="button-symbol">⌕</span> Search</button></form>`;
+    }
+    function renderWebResults() {
+      if (webSearchState === "loading") return `<div class="web-status" role="status">Searching ${escapeHtml(data.preferences.searchProvider === "brave" ? "Brave" : "Google")} for “${escapeHtml(webQuery)}”…</div>`;
+      if (webSearchState === "error") return `<div class="web-status" role="alert">${escapeHtml(webSearchError)}</div>`;
+      if (webSearchState === "empty") return `<div class="web-status">No results found. Try a different search.</div>`;
+      if (!webResults.length) return `<div class="web-status">Search the web and your results will appear here.</div>`;
+      return webResults.map(result => {
+        let safeUrl = "";
+        try { const parsed = new URL(result.url); if (["https:", "http:"].includes(parsed.protocol)) safeUrl = parsed.href; } catch {}
+        if (!safeUrl) return "";
+        return `<article class="web-result"><a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(result.title)}</a><small>${escapeHtml(result.source || safeUrl)}</small><p>${escapeHtml(result.snippet || "")}</p></article>`;
+      }).join("");
+    }
+    function renderPublicWebSearch() {
+      document.getElementById("app").innerHTML = `<main class="public-search"><div class="brand"><span class="brand-mark">p.</span><span>people index</span></div><p class="eyebrow">The open web</p><h1>Search the internet</h1><p class="public-search-intro">Results from your selected search provider, shown here.</p><section class="web-search-panel">${renderWebSearchForm()}<div class="web-results" id="web-results">${renderWebResults()}</div></section></main>`;
+      bindWebSearchForm();
+    }
+    function bindWebSearchForm() {
+      document.getElementById("web-search-form")?.addEventListener("submit", event => {
+        event.preventDefault();
+        const input = document.getElementById("web-search-input");
+        const provider = document.getElementById("web-provider").value;
+        webQuery = input.value.trim();
+        data.preferences.searchProvider = provider;
+        saveData();
+        if (!webQuery) return;
+        const url = new URL(location.href);
+        url.searchParams.set("web", webQuery);
+        history.replaceState({}, "", url);
+        searchWeb(webQuery);
+      });
+      document.getElementById("web-provider")?.addEventListener("change", event => {
+        data.preferences.searchProvider = event.target.value;
+        saveData();
+      });
+    }
+    async function searchWeb(query) {
+      if (activeSearchController) activeSearchController.abort();
+      const controller = new AbortController();
+      activeSearchController = controller;
+      webQuery = query.trim();
+      webResults = [];
+      webSearchError = "";
+      webSearchState = "loading";
+      updateWebResults();
+      const params = new URLSearchParams({ q: webQuery, provider: data.preferences.searchProvider });
+      try {
+        const response = await fetch(`/api/search?${params}`, { signal: controller.signal });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "Search could not be completed.");
+        webResults = Array.isArray(payload.results) ? payload.results : [];
+        webSearchState = webResults.length ? "results" : "empty";
+      } catch (error) {
+        if (error.name === "AbortError") return;
+        webSearchState = "error";
+        webSearchError = error.message || "Search is temporarily unavailable.";
+      }
+      updateWebResults();
+    }
+    function updateWebResults() {
+      const results = document.getElementById("web-results");
+      if (results) results.innerHTML = renderWebResults();
     }
     function renderSettings() {
       const previewStyle = data.preferences.wallpaper ? ` style="background-image:url('${data.preferences.wallpaper}')"` : "";
-      return `<div class="section-heading"><div><p class="eyebrow">Personalize your workspace</p><h2>Preferences</h2><p>Changes apply in this browser.</p></div></div><div class="settings-layout"><section class="detail-panel"><h3>Wallpaper</h3><div class="setting-row"><div><strong>Your background</strong><small>Choose a JPG, PNG, or WebP image up to 1.5 MB. It stays in this browser.</small><div style="display:flex;gap:8px;margin-top:11px"><label class="quiet-button" for="wallpaper-upload">Choose image</label><input id="wallpaper-upload" type="file" accept="image/jpeg,image/png,image/webp" hidden>${data.preferences.wallpaper ? `<button class="text-button" data-action="reset-wallpaper">Remove wallpaper</button>` : ""}</div></div><div class="wallpaper-preview"${previewStyle} aria-label="Wallpaper preview"></div></div></section><section class="detail-panel"><h3>Default web search provider</h3><div class="setting-row"><div><strong>Search with</strong><small>Used for web searches from this app and the browser shortcut.</small></div><select id="preference-provider" class="filter-select"><option value="google"${data.preferences.searchProvider === "google" ? " selected" : ""}>Google</option><option value="bing"${data.preferences.searchProvider === "bing" ? " selected" : ""}>Microsoft Bing</option><option value="duckduckgo"${data.preferences.searchProvider === "duckduckgo" ? " selected" : ""}>DuckDuckGo</option></select></div></section><section class="detail-panel"><h3>Use People Index from your address bar</h3><div class="setting-row"><div><strong>Browser search shortcut</strong><small>Your browser requires you to add this site manually.</small></div><button class="quiet-button" data-action="default-search">Setup instructions</button></div></section></div>`;
+      return `<div class="section-heading"><div><p class="eyebrow">Personalize your workspace</p><h2>Preferences</h2><p>Changes apply in this browser.</p></div></div><div class="settings-layout"><section class="detail-panel"><h3>Wallpaper</h3><div class="setting-row"><div><strong>Your background</strong><small>Choose a JPG, PNG, or WebP image up to 1.5 MB. It stays in this browser.</small><div style="display:flex;gap:8px;margin-top:11px"><label class="quiet-button" for="wallpaper-upload">Choose image</label><input id="wallpaper-upload" type="file" accept="image/jpeg,image/png,image/webp" hidden>${data.preferences.wallpaper ? `<button class="text-button" data-action="reset-wallpaper">Remove wallpaper</button>` : ""}</div></div><div class="wallpaper-preview"${previewStyle} aria-label="Wallpaper preview"></div></div></section><section class="detail-panel"><h3>Default web search provider</h3><div class="setting-row"><div><strong>Search with</strong><small>Provider credentials are configured privately in Vercel.</small></div><select id="preference-provider" class="filter-select"><option value="google"${data.preferences.searchProvider === "google" ? " selected" : ""}>Google Custom Search</option><option value="brave"${data.preferences.searchProvider === "brave" ? " selected" : ""}>Brave Search</option></select></div><p class="notice">Google needs GOOGLE_CSE_API_KEY and GOOGLE_CSE_ENGINE_ID. Brave needs BRAVE_SEARCH_API_KEY. Add these in Vercel Project Settings → Environment Variables.</p></section><section class="detail-panel"><h3>Use People Index from your address bar</h3><div class="setting-row"><div><strong>Browser search shortcut</strong><small>Your browser requires you to add this site manually.</small></div><button class="quiet-button" data-action="default-search">Setup instructions</button></div></section></div>`;
     }
     function renderScreenShare() {
       const sharing = Boolean(activeScreenStream);
@@ -494,11 +583,7 @@
       });
       document.getElementById("directory-search")?.addEventListener("input", event => { currentQuery = event.target.value; const cursor = event.target.selectionStart; render(); const input = document.getElementById("directory-search"); input.focus(); input.setSelectionRange(cursor, cursor); });
       document.getElementById("department-filter")?.addEventListener("change", event => { activeDepartment = event.target.value; render(); });
-      document.getElementById("web-search-form")?.addEventListener("submit", event => {
-        event.preventDefault(); webQuery = document.getElementById("web-search-input").value.trim();
-        data.preferences.searchProvider = document.getElementById("web-provider").value; saveData();
-        if (webQuery) window.open(webSearchUrl(webQuery), "_blank", "noopener,noreferrer");
-      });
+      bindWebSearchForm();
       document.getElementById("preference-provider")?.addEventListener("change", event => { data.preferences.searchProvider = event.target.value; saveData(); showToast("Web search preference saved."); });
       document.getElementById("wallpaper-upload")?.addEventListener("change", event => saveWallpaper(event.target.files[0]));
       document.querySelectorAll("[data-member-role]").forEach(select => select.addEventListener("change", event => updateMemberRole(event.target.dataset.memberRole, event.target.value)));
