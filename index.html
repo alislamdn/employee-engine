@@ -361,6 +361,11 @@
       render();
     }
     function render() {
+      if (initialWebSearch && !webRedirected) {
+        webRedirected = true;
+        window.location.replace(webSearchUrl(initialWebSearch));
+        return;
+      }
       if (!data.currentUser) { renderSignIn(); return; }
       if (!userCompanies().length) { renderWorkspaceChoice(); return; }
       if (initialWebSearch) currentView = "web";
@@ -395,10 +400,6 @@
       bindEvents();
       const preview = document.getElementById("screen-preview");
       if (preview && activeScreenStream) preview.srcObject = activeScreenStream;
-      if (currentView === "web" && initialWebSearch && !webRedirected) {
-        webRedirected = true;
-        window.location.replace(webSearchUrl(initialWebSearch));
-      }
     }
     function renderSignIn() {
       document.getElementById("app").innerHTML = `<main class="access-screen"><section class="access-aside"><div class="brand"><span class="brand-mark">p.</span><span>people index</span></div><div class="access-message"><p class="eyebrow">A better way to find your people</p><h1>Work moves when people connect.</h1><p>One place for teammates, quick searches, and the people who make work happen.</p></div><small>People Index · Employee directory</small></section><section class="access-main"><div class="access-panel"><p class="eyebrow">Welcome</p><h2>Sign in to continue</h2><p>Use your work email to enter your workspace. First time here? We’ll help you create or join a company next.</p><form id="sign-in-form"><div class="field"><label for="sign-in-name">Your name</label><input id="sign-in-name" name="name" autocomplete="name" required maxlength="70" placeholder="Jordan Lee"></div><div class="field"><label for="sign-in-email">Work email</label><input id="sign-in-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@company.com"></div><button class="primary-button" type="submit" style="width:100%;padding:11px">Continue with email <span class="button-symbol">→</span></button></form><div class="notice">Demo sign-in only: this prototype does not verify your identity or protect accounts. Real sign-in needs an authentication service.</div></div></section></main>`;
