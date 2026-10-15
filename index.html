@@ -31,6 +31,28 @@
     button, input, select, textarea { font: inherit; }
     button { color: inherit; }
     .app { min-height: 100vh; }
+    .access-screen { display: grid; min-height: 100vh; grid-template-columns: minmax(300px, .92fr) minmax(350px, 1.08fr); background: #f8f8f5; }
+    .access-aside { display: flex; min-height: 100vh; flex-direction: column; justify-content: space-between; padding: 42px clamp(25px, 5vw, 74px); color: #f2f5ef; background: var(--pine); background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 3%) 0 1px, transparent 1px 12px); }
+    .access-aside .brand { padding: 0; }
+    .access-message { max-width: 420px; padding: 60px 0; }
+    .access-message .eyebrow { color: #e5bd79; }
+    .access-message h1 { margin: 0 0 15px; font-family: "Newsreader", Georgia, serif; font-size: clamp(38px, 5vw, 60px); font-weight: 500; letter-spacing: 0; line-height: 1; }
+    .access-message p { max-width: 340px; color: #c4d0c7; font-size: 13px; line-height: 1.7; }
+    .access-aside small { color: #a8b9af; font-size: 10px; }
+    .access-main { display: grid; min-height: 100vh; place-items: center; padding: 35px 22px; }
+    .access-panel { width: min(430px, 100%); }
+    .access-panel h2 { margin: 0 0 8px; font-family: "Newsreader", Georgia, serif; font-size: 30px; font-weight: 500; letter-spacing: 0; }
+    .access-panel > p { margin: 0 0 23px; color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .access-panel .notice { margin: 16px 0 0; }
+    .access-choices { display: grid; gap: 10px; margin: 18px 0; }
+    .access-choice { display: flex; width: 100%; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 7px; padding: 14px; background: #fff; cursor: pointer; text-align: left; }
+    .access-choice:hover { border-color: #b4c4b7; background: #fbfcf9; }
+    .access-choice-symbol { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 8px; color: var(--pine); background: var(--pine-soft); font-size: 17px; }
+    .access-choice strong, .access-choice small { display: block; }
+    .access-choice strong { font-size: 11px; }
+    .access-choice small { margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .access-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; color: #929a93; font-size: 9px; }
+    .access-divider::before, .access-divider::after { height: 1px; flex: 1; background: var(--line); content: ""; }
     .sidebar { position: fixed; inset: 0 auto 0 0; z-index: 5; display: flex; width: 248px; flex-direction: column; padding: 27px 17px 18px; color: #f2f5ef; background: var(--pine); }
     .brand { display: flex; align-items: center; gap: 11px; padding: 0 10px 27px; color: inherit; font-size: 15px; font-weight: 700; letter-spacing: .01em; }
     .brand-mark { display: grid; width: 31px; height: 31px; place-items: center; border-radius: 10px; color: var(--pine); background: var(--gold); font-family: Georgia, serif; font-size: 20px; }
@@ -61,7 +83,7 @@
     .profile .avatar { width: 31px; height: 31px; border: 1px solid rgb(255 255 255 / 30%); font-size: 10px; }
     .profile strong { display: block; font-size: 11px; }
     .profile small { color: #a8b9af; font-size: 10px; }
-    .main { min-height: 100vh; margin-left: 248px; }
+    .main { min-height: 100vh; margin-left: 248px; background: linear-gradient(rgb(246 247 244 / 88%), rgb(246 247 244 / 94%)), var(--user-wallpaper, none) center / cover fixed; }
     .topbar { display: flex; height: 68px; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 0 42px; background: rgb(255 255 255 / 78%); }
     .breadcrumb { color: var(--muted); font-size: 11px; }
     .breadcrumb strong { color: var(--ink); font-weight: 600; }
@@ -137,6 +159,17 @@
     .detail-panel { border: 1px solid var(--line); border-radius: 8px; padding: 17px; background: #fff; }
     .detail-panel h3 { margin: 0 0 12px; font-size: 11px; }
     .detail-panel p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .web-search-panel { border: 1px solid var(--line); border-radius: 9px; padding: 23px; background: #fff; }
+    .web-search-panel form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 9px; }
+    .web-search-panel .search-wrap { grid-column: 1 / -1; max-width: none; box-shadow: none; }
+    .web-search-panel .field { margin: 0; }
+    .settings-layout { display: grid; gap: 12px; }
+    .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #eef0eb; padding: 13px 0; }
+    .setting-row:last-child { border-bottom: 0; }
+    .setting-row strong { display: block; font-size: 11px; }
+    .setting-row small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .wallpaper-preview { width: 110px; height: 58px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 6px; background: linear-gradient(135deg, #e8eee5, #e7eff3 50%, #f3e5d5); background-position: center; background-size: cover; }
+    .screen-preview { display: block; width: 100%; max-height: 460px; margin-top: 14px; border: 1px solid var(--line); border-radius: 7px; background: #18221d; }
     .modal-backdrop { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; overflow-y: auto; padding: 18px; background: rgb(21 35 29 / 48%); animation: fade-in .16s ease-out; }
     .modal { width: min(440px, 100%); border: 1px solid rgb(255 255 255 / 80%); border-radius: 10px; padding: 24px; background: #fff; box-shadow: var(--shadow); animation: rise-in .2s ease-out; }
     .modal h2 { margin: 0 0 6px; font-family: "Newsreader", Georgia, serif; font-size: 25px; font-weight: 500; }
@@ -165,6 +198,16 @@
       .person-location { display: none; }
     }
     @media (max-width: 650px) {
+      .access-screen { grid-template-columns: 1fr; }
+      .access-aside { min-height: auto; padding: 19px 21px 0; background-position: center; }
+      .access-aside .brand { padding: 0; }
+      .access-message { padding: 27px 0 19px; }
+      .access-message .eyebrow { margin-bottom: 8px; }
+      .access-message h1 { max-width: 390px; margin-bottom: 8px; font-size: 35px; }
+      .access-message p { margin-bottom: 0; font-size: 11px; }
+      .access-aside > small { display: none; }
+      .access-main { min-height: auto; padding: 25px 21px 36px; }
+      .access-panel h2 { font-size: 26px; }
       .sidebar { position: sticky; inset: 0 0 auto; width: 100%; height: auto; padding: 10px 12px 9px; }
       .brand { display: none; }
       .workspace-label, .nav-label, .sidebar-spacer, .invite-rail, .profile { display: none; }
@@ -223,7 +266,7 @@
   <script>
     const STORAGE_KEY = "people-index-v1";
     const seed = {
-      companies: [{ id: "al-islam-md", name: "Al-Islam MD", industry: "Healthcare", location: "Maryland, US", inviteCode: "join-al-islam-md" }],
+      companies: [{ id: "al-islam-md", name: "Al-Islam MD", industry: "Healthcare", location: "Maryland, US", inviteCode: "join-al-islam-md", members: [] }],
       people: [
         { id: "p-101", companyId: "al-islam-md", name: "Aisha Rahman", role: "People Operations Lead", department: "People & Culture", email: "aisha.rahman@alislammd.com", location: "Baltimore, MD", status: "Available" },
         { id: "p-102", companyId: "al-islam-md", name: "Omar Siddiqui", role: "Clinical Director", department: "Clinical", email: "omar.siddiqui@alislammd.com", location: "Silver Spring, MD", status: "In a meeting" },
@@ -242,18 +285,29 @@
         { id: "s-2", label: "Available now", query: "available" },
         { id: "s-3", label: "Working in Maryland", query: "Maryland" }
       ],
-      activeCompany: "al-islam-md"
+      activeCompany: "al-islam-md",
+      currentUser: null,
+      preferences: { wallpaper: "", searchProvider: "google" }
     };
     let data = loadData();
-    let currentView = "search";
+    let initialWebSearch = new URLSearchParams(location.search).get("web") || "";
+    let currentView = initialWebSearch ? "web" : "search";
     let currentQuery = "";
+    let webQuery = initialWebSearch;
+    let webRedirected = false;
+    let activeScreenStream = null;
     let activeDepartment = "all";
     let toastTimer;
 
     function loadData() {
       try {
         const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        if (saved && Array.isArray(saved.companies) && Array.isArray(saved.people)) return { ...structuredClone(seed), ...saved };
+        if (saved && Array.isArray(saved.companies) && Array.isArray(saved.people)) {
+          const restored = { ...structuredClone(seed), ...saved };
+          restored.companies = restored.companies.map(company => ({ ...company, members: Array.isArray(company.members) ? company.members : [] }));
+          restored.preferences = { ...seed.preferences, ...restored.preferences };
+          return restored;
+        }
       } catch (error) {
         console.warn("Saved workspace could not be loaded.", error);
       }
@@ -266,7 +320,30 @@
     function escapeHtml(value) {
       return String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
     }
-    function activeCompany() { return data.companies.find(company => company.id === data.activeCompany) || data.companies[0]; }
+    function userCompanies() {
+      if (!data.currentUser) return [];
+      return data.companies.filter(company => company.members.some(member => member.email === data.currentUser.email));
+    }
+    function activeCompany() {
+      const accessible = userCompanies();
+      return accessible.find(company => company.id === data.activeCompany) || accessible[0];
+    }
+    function currentMembership(company = activeCompany()) {
+      return company?.members.find(member => member.email === data.currentUser?.email);
+    }
+    function canManageCompany(company = activeCompany()) {
+      return ["owner", "admin"].includes(currentMembership(company)?.role);
+    }
+    function applyPreferences() {
+      const wallpaper = data.preferences.wallpaper;
+      document.documentElement.style.setProperty("--user-wallpaper", wallpaper ? `url("${wallpaper}")` : "none");
+    }
+    function webSearchUrl(query) {
+      const encoded = encodeURIComponent(query.trim());
+      if (data.preferences.searchProvider === "bing") return `https://www.bing.com/search?q=${encoded}`;
+      if (data.preferences.searchProvider === "duckduckgo") return `https://duckduckgo.com/?q=${encoded}`;
+      return `https://www.google.com/search?q=${encoded}`;
+    }
     function companyPeople() { return data.people.filter(person => person.companyId === activeCompany().id); }
     function companyMeetings() { return data.meetings.filter(meeting => meeting.companyId === activeCompany().id); }
     function initials(name) { return name.split(/\s+/).slice(0, 2).map(part => part[0]).join("").toUpperCase(); }
@@ -284,13 +361,17 @@
       render();
     }
     function render() {
+      if (!data.currentUser) { renderSignIn(); return; }
+      if (!userCompanies().length) { renderWorkspaceChoice(); return; }
+      if (initialWebSearch) currentView = "web";
+      applyPreferences();
       const company = activeCompany();
       const peopleCount = companyPeople().length;
       const meetingsCount = companyMeetings().length;
       const bookmarkedCount = companyPeople().filter(person => data.bookmarks.includes(person.id)).length;
       const navItems = [
         ["search", "⌕", "Find people", ""], ["shortcuts", "⌘", "Shortcuts", ""],
-        ["saved", "♡", "Bookmarks", bookmarkedCount], ["meetings", "▦", "Meetings", meetingsCount], ["company", "⌂", "Company", ""]
+        ["saved", "♡", "Bookmarks", bookmarkedCount], ["meetings", "▦", "Meetings", meetingsCount], ["web", "◎", "Web search", ""], ["screen", "▣", "Screen share", ""], ["company", "⌂", "Company", ""], ["settings", "⚙", "Preferences", ""]
       ];
       document.getElementById("app").innerHTML = `
         <aside class="sidebar">
@@ -299,29 +380,59 @@
           <div class="workspace-label">Your workspace</div>
           <div class="company-picker">
             <button class="company-button" id="company-picker" aria-expanded="false"><span class="company-name">${escapeHtml(company.name)}</span><span class="company-caret">⌄</span></button>
-            <div class="company-menu" id="company-menu">${data.companies.map(item => `<button data-company="${escapeHtml(item.id)}"><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.industry || "Company")}</small></button>`).join("")}<button data-action="new-company"><strong>＋ Create a company</strong><small>Start another workspace</small></button></div>
+            <div class="company-menu" id="company-menu">${userCompanies().map(item => `<button data-company="${escapeHtml(item.id)}"><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.industry || "Company")}</small></button>`).join("")}<button data-action="new-company"><strong>＋ Create a company</strong><small>Start another workspace</small></button></div>
           </div>
           <div class="nav-label">Directory</div>
           <nav class="nav" aria-label="Main navigation">${navItems.map(([view, icon, label, count]) => `<button class="nav-button${currentView === view ? " active" : ""}" data-view="${view}"><span class="nav-icon">${icon}</span><span>${label}</span>${count ? `<span class="nav-count">${count}</span>` : ""}</button>`).join("")}</nav>
           <div class="sidebar-spacer"></div>
           <div class="invite-rail"><strong>Grow your directory</strong><p>Invite your team with a company referral link.</p><button data-action="invite">Copy invite link →</button></div>
-          <div class="profile"><span class="avatar tone-2">PI</span><span><strong>Workspace admin</strong><small>${peopleCount} people in directory</small></span></div>
+          <div class="profile"><span class="avatar tone-2">${escapeHtml(initials(data.currentUser.name))}</span><span><strong>${escapeHtml(data.currentUser.name)}</strong><small>${escapeHtml(currentMembership(company)?.role || "member")} · ${peopleCount} people</small></span><button class="icon-button" data-action="sign-out" title="Sign out" aria-label="Sign out">↪</button></div>
         </aside>
         <main class="main">
-          <header class="topbar"><div class="breadcrumb">${escapeHtml(company.name)} <span aria-hidden="true">/</span> <strong>${navItems.find(item => item[0] === currentView)?.[2] || "Find people"}</strong></div><div class="top-actions"><button class="quiet-button" data-action="invite"><span class="button-symbol">↗</span> Invite people</button><button class="primary-button" data-action="add-person"><span class="button-symbol">＋</span> Add person</button></div></header>
+          <header class="topbar"><div class="breadcrumb">${escapeHtml(company.name)} <span aria-hidden="true">/</span> <strong>${navItems.find(item => item[0] === currentView)?.[2] || "Find people"}</strong></div><div class="top-actions">${canManageCompany() ? `<button class="quiet-button" data-action="invite"><span class="button-symbol">↗</span> Invite people</button><button class="primary-button" data-action="add-person"><span class="button-symbol">＋</span> Add person</button>` : ""}</div></header>
           <div class="content">${renderView(company, peopleCount, bookmarkedCount)}</div>
         </main>`;
       bindEvents();
-      const joinCode = new URLSearchParams(location.search).get("join");
-      if (joinCode && !sessionStorage.getItem(`joined-prompt-${joinCode}`)) {
-        const invitedCompany = data.companies.find(item => item.inviteCode === joinCode);
-        if (invitedCompany) { sessionStorage.setItem(`joined-prompt-${joinCode}`, "1"); openJoinModal(invitedCompany); }
+      const preview = document.getElementById("screen-preview");
+      if (preview && activeScreenStream) preview.srcObject = activeScreenStream;
+      if (currentView === "web" && initialWebSearch && !webRedirected) {
+        webRedirected = true;
+        window.location.replace(webSearchUrl(initialWebSearch));
       }
+    }
+    function renderSignIn() {
+      document.getElementById("app").innerHTML = `<main class="access-screen"><section class="access-aside"><div class="brand"><span class="brand-mark">p.</span><span>people index</span></div><div class="access-message"><p class="eyebrow">A better way to find your people</p><h1>Work moves when people connect.</h1><p>One place for teammates, quick searches, and the people who make work happen.</p></div><small>People Index · Employee directory</small></section><section class="access-main"><div class="access-panel"><p class="eyebrow">Welcome</p><h2>Sign in to continue</h2><p>Use your work email to enter your workspace. First time here? We’ll help you create or join a company next.</p><form id="sign-in-form"><div class="field"><label for="sign-in-name">Your name</label><input id="sign-in-name" name="name" autocomplete="name" required maxlength="70" placeholder="Jordan Lee"></div><div class="field"><label for="sign-in-email">Work email</label><input id="sign-in-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@company.com"></div><button class="primary-button" type="submit" style="width:100%;padding:11px">Continue with email <span class="button-symbol">→</span></button></form><div class="notice">Demo sign-in only: this prototype does not verify your identity or protect accounts. Real sign-in needs an authentication service.</div></div></section></main>`;
+      document.getElementById("sign-in-form").addEventListener("submit", event => {
+        event.preventDefault(); const form = new FormData(event.currentTarget);
+        data.currentUser = { name: String(form.get("name")).trim(), email: String(form.get("email")).trim().toLowerCase() };
+        saveData(); render();
+      });
+    }
+    function renderWorkspaceChoice() {
+      document.getElementById("app").innerHTML = `<main class="access-screen"><section class="access-aside"><div class="brand"><span class="brand-mark">p.</span><span>people index</span></div><div class="access-message"><p class="eyebrow">Your workspace starts here</p><h1>Find your place on the team.</h1><p>Create a company directory or join one with a referral code from its owner.</p></div><small>Signed in as ${escapeHtml(data.currentUser.email)}</small></section><section class="access-main"><div class="access-panel"><p class="eyebrow">Step 2 · Workspace</p><h2>Create or join a company</h2><p>Company access is tied to your profile in this browser demo.</p><div class="access-choices"><button class="access-choice" data-action="onboarding-create"><span class="access-choice-symbol">＋</span><span><strong>Create a company</strong><small>You’ll be the company owner</small></span></button></div><div class="access-divider">OR JOIN WITH A REFERRAL</div><form id="join-company-form"><div class="field"><label for="join-code">Company referral link or code</label><input id="join-code" name="code" required placeholder="Paste the link or invite code"></div><button class="primary-button" type="submit" style="width:100%;padding:11px">Join company <span class="button-symbol">→</span></button></form><div class="notice">The starter workspace invite code for this local demo is <strong>join-al-islam-md</strong>. Referral links won’t share data across separate browsers until a backend is connected.</div></div></section></main>`;
+      document.querySelector('[data-action="onboarding-create"]').addEventListener("click", openCompanyModal);
+      document.getElementById("join-company-form").addEventListener("submit", event => {
+        event.preventDefault(); const submitted = String(new FormData(event.currentTarget).get("code")).trim();
+        let code = submitted;
+        try { code = new URL(submitted).searchParams.get("join") || submitted; } catch {}
+        joinCompany(code);
+      });
+    }
+    function joinCompany(code) {
+      const company = data.companies.find(item => item.inviteCode === code);
+      if (!company) { showToast("That referral code was not found in this browser.", true); return; }
+      if (!company.members.some(member => member.email === data.currentUser.email)) {
+        company.members.push({ email: data.currentUser.email, name: data.currentUser.name, role: company.members.length ? "member" : "owner" });
+      }
+      data.activeCompany = company.id; saveData(); render(); showToast(`Joined ${company.name}.`);
     }
     function renderView(company, peopleCount, bookmarkedCount) {
       if (currentView === "saved") return renderPeopleView("Bookmarks", "People you have saved for quick access.", companyPeople().filter(person => data.bookmarks.includes(person.id)));
       if (currentView === "shortcuts") return renderShortcuts();
       if (currentView === "meetings") return renderMeetings();
+      if (currentView === "web") return renderWebSearch();
+      if (currentView === "screen") return renderScreenShare();
+      if (currentView === "settings") return renderSettings();
       if (currentView === "company") return renderCompany(company, peopleCount, bookmarkedCount);
       return renderSearch(company, peopleCount, bookmarkedCount);
     }
@@ -355,8 +466,21 @@
       const meetings = companyMeetings().slice().sort((a, b) => a.date.localeCompare(b.date));
       return `<div class="section-heading"><div><p class="eyebrow">Make time for people</p><h2>Meetings</h2><p>Planned conversations with your teammates.</p></div><button class="primary-button" data-action="add-meeting"><span class="button-symbol">＋</span> Schedule meeting</button></div>${meetings.length ? `<div class="meeting-list">${meetings.map(meeting => { const date = new Date(meeting.date); const person = data.people.find(item => item.id === meeting.personId); return `<article class="meeting-row"><div class="meeting-date"><strong>${date.toLocaleDateString(undefined, { day: "2-digit", timeZone: "UTC" })}</strong><small>${date.toLocaleDateString(undefined, { month: "short", timeZone: "UTC" })}</small></div><div class="meeting-info"><strong>${escapeHtml(meeting.title)}</strong><small>${date.toLocaleString(undefined, { weekday: "short", hour: "numeric", minute: "2-digit" })} · ${escapeHtml(meeting.duration)} min${person ? ` · with ${escapeHtml(person.name)}` : ""}</small></div><button class="icon-button" data-action="delete-meeting" data-meeting="${escapeHtml(meeting.id)}" title="Cancel meeting" aria-label="Cancel meeting">×</button></article>`; }).join("")}</div>` : `<div class="people-list"><div class="empty-state"><strong>Your calendar is clear</strong>Schedule a meeting to make time with a teammate.</div></div>`}`;
     }
+    function renderWebSearch() {
+      return `<div class="section-heading"><div><p class="eyebrow">Search beyond your team</p><h2>Search the web</h2><p>Look up anything on the public internet.</p></div></div><section class="web-search-panel"><form id="web-search-form"><div class="search-wrap"><span class="search-symbol" aria-hidden="true">⌕</span><input class="search-input" id="web-search-input" type="search" autocomplete="off" placeholder="Search the web" value="${escapeHtml(webQuery)}" aria-label="Search the public web"></div><div class="field"><label for="web-provider">Search with</label><select id="web-provider" class="filter-select"><option value="google"${data.preferences.searchProvider === "google" ? " selected" : ""}>Google</option><option value="bing"${data.preferences.searchProvider === "bing" ? " selected" : ""}>Microsoft Bing</option><option value="duckduckgo"${data.preferences.searchProvider === "duckduckgo" ? " selected" : ""}>DuckDuckGo</option></select></div><button class="primary-button" type="submit"><span class="button-symbol">⌕</span> Search web</button></form><p class="search-footnote"><span>Your search opens in a new tab at the selected provider.</span></p></section><div class="company-detail-grid"><section class="detail-panel"><h3>Use this as your browser search shortcut</h3><p>Add People Index as a site search in your browser. Searches typed in the address bar will be forwarded to your chosen provider.</p><button class="text-button" data-action="default-search">Set up browser search →</button></section><section class="detail-panel"><h3>Search your company directory</h3><p>Find names, roles, departments, and locations in ${escapeHtml(activeCompany().name)}.</p><button class="text-button" data-view="search">Find a teammate →</button></section></div>`;
+    }
+    function renderSettings() {
+      const previewStyle = data.preferences.wallpaper ? ` style="background-image:url('${data.preferences.wallpaper}')"` : "";
+      return `<div class="section-heading"><div><p class="eyebrow">Personalize your workspace</p><h2>Preferences</h2><p>Changes apply in this browser.</p></div></div><div class="settings-layout"><section class="detail-panel"><h3>Wallpaper</h3><div class="setting-row"><div><strong>Your background</strong><small>Choose a JPG, PNG, or WebP image up to 1.5 MB. It stays in this browser.</small><div style="display:flex;gap:8px;margin-top:11px"><label class="quiet-button" for="wallpaper-upload">Choose image</label><input id="wallpaper-upload" type="file" accept="image/jpeg,image/png,image/webp" hidden>${data.preferences.wallpaper ? `<button class="text-button" data-action="reset-wallpaper">Remove wallpaper</button>` : ""}</div></div><div class="wallpaper-preview"${previewStyle} aria-label="Wallpaper preview"></div></div></section><section class="detail-panel"><h3>Default web search provider</h3><div class="setting-row"><div><strong>Search with</strong><small>Used for web searches from this app and the browser shortcut.</small></div><select id="preference-provider" class="filter-select"><option value="google"${data.preferences.searchProvider === "google" ? " selected" : ""}>Google</option><option value="bing"${data.preferences.searchProvider === "bing" ? " selected" : ""}>Microsoft Bing</option><option value="duckduckgo"${data.preferences.searchProvider === "duckduckgo" ? " selected" : ""}>DuckDuckGo</option></select></div></section><section class="detail-panel"><h3>Use People Index from your address bar</h3><div class="setting-row"><div><strong>Browser search shortcut</strong><small>Your browser requires you to add this site manually.</small></div><button class="quiet-button" data-action="default-search">Setup instructions</button></div></section></div>`;
+    }
+    function renderScreenShare() {
+      const sharing = Boolean(activeScreenStream);
+      return `<div class="section-heading"><div><p class="eyebrow">Consent-based screen sharing</p><h2>Screen share</h2><p>Share your screen only when you choose to.</p></div></div><section class="detail-panel"><h3>${sharing ? "You are sharing this screen" : "No screen is being shared"}</h3><p>${sharing ? "Your browser shows a sharing indicator. Stop sharing here or from the browser’s own sharing controls." : "Choose a screen or window to share. The browser will ask for permission, and you can stop at any time."}</p>${sharing ? `<video class="screen-preview" id="screen-preview" autoplay playsinline muted></video><button class="quiet-button" style="margin-top:12px" data-action="stop-screen-share">Stop sharing</button>` : `<button class="primary-button" style="margin-top:12px" data-action="start-screen-share">Share my screen</button>`}<div class="notice">Privacy: this prototype does not send your screen to admins or record it. Remote team sharing requires a secure real-time service and must remain user-approved.</div></section>`;
+    }
     function renderCompany(company, peopleCount, bookmarkedCount) {
-      return `<div class="section-heading"><div><p class="eyebrow">Workspace settings</p><h2>Your company</h2><p>Manage the people and invitations for this directory.</p></div><button class="primary-button" data-action="new-company"><span class="button-symbol">＋</span> New company</button></div><section class="company-banner"><div><h2>${escapeHtml(company.name)}</h2><p>${escapeHtml(company.industry || "Company")} · ${escapeHtml(company.location || "Location not set")}</p></div><button class="quiet-button" data-action="invite"><span class="button-symbol">↗</span> Invite people</button></section><div class="company-detail-grid"><section class="detail-panel"><h3>Workspace at a glance</h3><p>${peopleCount} people · ${new Set(companyPeople().map(person => person.department).filter(Boolean)).size} departments · ${bookmarkedCount} bookmarked profiles</p></section><section class="detail-panel"><h3>Team referral link</h3><p>Anyone with this link can submit their details to join this company in this local demo. It is not a secure sign-in link.</p><button class="text-button" data-action="invite">Copy referral link →</button></section></div>`;
+      const owner = currentMembership(company)?.role === "owner";
+      const memberRows = company.members.map(member => `<div class="setting-row"><div><strong>${escapeHtml(member.name || member.email)}</strong><small>${escapeHtml(member.email)}</small></div>${owner && member.role !== "owner" ? `<select class="filter-select" data-member-role="${escapeHtml(member.email)}" aria-label="Role for ${escapeHtml(member.name || member.email)}"><option value="member"${member.role === "member" ? " selected" : ""}>Member</option><option value="admin"${member.role === "admin" ? " selected" : ""}>Admin</option></select>` : `<span class="nav-count">${escapeHtml(member.role)}</span>`}</div>`).join("");
+      return `<div class="section-heading"><div><p class="eyebrow">Workspace settings</p><h2>Your company</h2><p>Manage the people and invitations for this directory.</p></div><button class="primary-button" data-action="new-company"><span class="button-symbol">＋</span> New company</button></div><section class="company-banner"><div><h2>${escapeHtml(company.name)}</h2><p>${escapeHtml(company.industry || "Company")} · ${escapeHtml(company.location || "Location not set")}</p></div>${canManageCompany() ? `<button class="quiet-button" data-action="invite"><span class="button-symbol">↗</span> Invite people</button>` : ""}</section><div class="company-detail-grid"><section class="detail-panel"><h3>Workspace at a glance</h3><p>${peopleCount} people · ${new Set(companyPeople().map(person => person.department).filter(Boolean)).size} departments · ${bookmarkedCount} bookmarked profiles</p></section><section class="detail-panel"><h3>Team referral link</h3><p>Share a referral link with teammates. Joining requires a sign-in step.</p>${canManageCompany() ? `<button class="text-button" data-action="invite">Copy referral link →</button>` : ""}</section></div><section class="detail-panel" style="margin-top:12px"><h3>Company access ${owner ? "· Owner can grant admin access" : "· Contact the owner to change roles"}</h3>${memberRows || `<p>No company members yet.</p>`}</section>`;
     }
     function bindEvents() {
       document.querySelectorAll("[data-view]").forEach(button => button.addEventListener("click", () => setView(button.dataset.view)));
@@ -369,6 +493,14 @@
       });
       document.getElementById("directory-search")?.addEventListener("input", event => { currentQuery = event.target.value; const cursor = event.target.selectionStart; render(); const input = document.getElementById("directory-search"); input.focus(); input.setSelectionRange(cursor, cursor); });
       document.getElementById("department-filter")?.addEventListener("change", event => { activeDepartment = event.target.value; render(); });
+      document.getElementById("web-search-form")?.addEventListener("submit", event => {
+        event.preventDefault(); webQuery = document.getElementById("web-search-input").value.trim();
+        data.preferences.searchProvider = document.getElementById("web-provider").value; saveData();
+        if (webQuery) window.open(webSearchUrl(webQuery), "_blank", "noopener,noreferrer");
+      });
+      document.getElementById("preference-provider")?.addEventListener("change", event => { data.preferences.searchProvider = event.target.value; saveData(); showToast("Web search preference saved."); });
+      document.getElementById("wallpaper-upload")?.addEventListener("change", event => saveWallpaper(event.target.files[0]));
+      document.querySelectorAll("[data-member-role]").forEach(select => select.addEventListener("change", event => updateMemberRole(event.target.dataset.memberRole, event.target.value)));
       document.querySelectorAll("[data-shortcut]").forEach(button => button.addEventListener("click", () => {
         const shortcut = data.shortcuts.find(item => item.id === button.dataset.shortcut); if (!shortcut) return;
         currentView = "search"; currentQuery = shortcut.query; activeDepartment = "all"; render();
@@ -380,8 +512,54 @@
       if (action === "add-shortcut") openShortcutModal();
       if (action === "add-meeting") openMeetingModal();
       if (action === "invite") openInviteModal();
+      if (action === "default-search") openDefaultSearchModal();
       if (action === "bookmark") toggleBookmark(details.person);
       if (action === "delete-meeting") deleteMeeting(details.meeting);
+      if (action === "reset-wallpaper") { data.preferences.wallpaper = ""; saveData(); render(); showToast("Wallpaper removed."); }
+      if (action === "sign-out") { data.currentUser = null; saveData(); render(); }
+      if (action === "start-screen-share") startScreenShare();
+      if (action === "stop-screen-share") stopScreenShare();
+    }
+    function updateMemberRole(email, role) {
+      if (currentMembership()?.role !== "owner" || !["member", "admin"].includes(role)) { showToast("Only the company owner can grant admin access.", true); render(); return; }
+      const member = activeCompany().members.find(item => item.email === email);
+      if (!member || member.role === "owner") return;
+      member.role = role; saveData(); render(); showToast(`${member.name || member.email} is now ${role}.`);
+    }
+    async function startScreenShare() {
+      if (!navigator.mediaDevices?.getDisplayMedia) { showToast("Screen sharing is not available in this browser.", true); return; }
+      try {
+        activeScreenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+        activeScreenStream.getVideoTracks()[0]?.addEventListener("ended", () => { activeScreenStream = null; render(); });
+        currentView = "screen"; render();
+      } catch (error) {
+        if (error.name !== "NotAllowedError") showToast("Could not start screen sharing.", true);
+      }
+    }
+    function stopScreenShare() {
+      if (!activeScreenStream) return;
+      const stream = activeScreenStream; activeScreenStream = null;
+      stream.getTracks().forEach(track => track.stop()); render();
+    }
+    function saveWallpaper(file) {
+      if (!file) return;
+      if (!["image/jpeg", "image/png", "image/webp"].includes(file.type) || file.size > 1.5 * 1024 * 1024) {
+        showToast("Choose a JPG, PNG, or WebP image under 1.5 MB.", true); return;
+      }
+      const reader = new FileReader();
+      reader.addEventListener("load", () => {
+        data.preferences.wallpaper = String(reader.result); saveData(); render(); showToast("Wallpaper saved in this browser.");
+      });
+      reader.addEventListener("error", () => showToast("That image could not be read.", true));
+      reader.readAsDataURL(file);
+    }
+    function openDefaultSearchModal() {
+      const searchUrl = `${location.origin}${location.pathname}?web=%s`;
+      openModal("Add a browser search shortcut", "Your browser controls its default search engine. Add People Index as a site search using this address.", `<div class="link-box" id="browser-search-url">${escapeHtml(searchUrl)}</div><div class="notice"><strong>Chrome:</strong> Settings → Search engine → Manage search engines and site search → Add. Enter People Index as the name, choose a shortcut, and paste the URL above.<br><br><strong>Edge:</strong> Settings → Privacy, search, and services → Address bar and search → Manage search engines → Add.</div><div class="modal-actions"><button class="quiet-button" type="button" data-cancel>Close</button><button class="primary-button" type="button" id="copy-search-url">Copy URL</button></div>`, () => {});
+      document.getElementById("copy-search-url").addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(searchUrl); showToast("Browser search URL copied."); }
+        catch { showToast("Clipboard access was blocked. Select and copy the URL above.", true); }
+      });
     }
     function toggleBookmark(personId) {
       data.bookmarks = data.bookmarks.includes(personId) ? data.bookmarks.filter(id => id !== personId) : [...data.bookmarks, personId]; saveData(); render();
@@ -402,15 +580,19 @@
         const name = String(form.get("name")).trim();
         if (data.companies.some(company => company.name.toLowerCase() === name.toLowerCase())) { showToast("A company with that name already exists.", true); return; }
         const id = `company-${crypto.randomUUID()}`;
-        data.companies.push({ id, name, industry: String(form.get("industry")).trim(), location: String(form.get("location")).trim(), inviteCode: `join-${crypto.randomUUID()}` }); data.activeCompany = id; saveData(); closeModal(); setView("company"); showToast(`${name} is ready. Invite your first teammate.`);
+        data.companies.push({ id, name, industry: String(form.get("industry")).trim(), location: String(form.get("location")).trim(), inviteCode: `join-${crypto.randomUUID()}`, members: [{ email: data.currentUser.email, name: data.currentUser.name, role: "owner" }] }); data.activeCompany = id; saveData(); closeModal(); setView("company"); showToast(`${name} is ready. Invite your first teammate.`);
       });
     }
     function openPersonModal(prefill = {}) {
+      if (!canManageCompany()) { showToast("Only company admins can add teammates.", true); return; }
       const company = activeCompany();
       openModal("Add a teammate", `Create a profile in ${escapeHtml(company.name)}'s directory.`, `<form><div class="form-grid"><div class="field"><label for="person-name">Full name</label><input id="person-name" name="name" required maxlength="70" placeholder="Jordan Lee" value="${escapeHtml(prefill.name || "")}"></div><div class="field"><label for="person-role">Role</label><input id="person-role" name="role" required maxlength="70" placeholder="Product manager"></div><div class="field"><label for="person-email">Work email</label><input id="person-email" name="email" type="email" required maxlength="120" placeholder="jordan@company.com" value="${escapeHtml(prefill.email || "")}"></div><div class="field"><label for="person-department">Department</label><input id="person-department" name="department" maxlength="60" placeholder="Product"></div><div class="field"><label for="person-location">Location</label><input id="person-location" name="location" maxlength="70" placeholder="Washington, DC"></div><div class="field"><label for="person-status">Status</label><select id="person-status" name="status"><option>Available</option><option>In a meeting</option><option>Away</option></select></div></div>${modalActions()}</form>`, form => {
         const email = String(form.get("email")).trim().toLowerCase();
         if (data.people.some(person => person.companyId === company.id && person.email.toLowerCase() === email)) { showToast("That email is already in this directory.", true); return; }
-        data.people.push({ id: `person-${crypto.randomUUID()}`, companyId: company.id, name: String(form.get("name")).trim(), role: String(form.get("role")).trim(), email, department: String(form.get("department")).trim(), location: String(form.get("location")).trim(), status: String(form.get("status")) }); saveData(); closeModal(); currentView = "search"; currentQuery = ""; render(); showToast("Teammate added to the directory.");
+        const name = String(form.get("name")).trim();
+        data.people.push({ id: `person-${crypto.randomUUID()}`, companyId: company.id, name, role: String(form.get("role")).trim(), email, department: String(form.get("department")).trim(), location: String(form.get("location")).trim(), status: String(form.get("status")) });
+        if (!company.members.some(member => member.email === email)) company.members.push({ email, name, role: "member" });
+        saveData(); closeModal(); currentView = "search"; currentQuery = ""; render(); showToast("Teammate added to the directory.");
       });
     }
     function openShortcutModal() {
@@ -429,6 +611,7 @@
       });
     }
     function openInviteModal() {
+      if (!canManageCompany()) { showToast("Only company admins can invite teammates.", true); return; }
       const company = activeCompany();
       const url = new URL(location.href); url.searchParams.set("join", company.inviteCode); url.hash = "";
       openModal("Invite your team", `Share a referral link to add people to ${escapeHtml(company.name)}.`, `<div class="link-box" id="referral-link">${escapeHtml(url.href)}</div><div class="notice">This prototype stores profiles in this browser only. Referral links do not authenticate users or share data across devices.</div><div class="modal-actions"><button class="quiet-button" type="button" data-cancel>Close</button><button class="primary-button" type="button" id="copy-invite"><span class="button-symbol">⧉</span> Copy link</button></div>`, () => {});
